@@ -15,7 +15,7 @@ import org.opencv.core.Core;
 import javax.swing.*;
 
 
-public class MinervaFxGui extends Application {
+public class OpenCvDemoFxGui extends Application {
 
     private WebcamPanel webcamPanel;
 
@@ -24,7 +24,7 @@ public class MinervaFxGui extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
-        consoleOutputTextArea = new JTextArea("Started " + Constants.MINERVAI_COMPLETE);
+        consoleOutputTextArea = new JTextArea("Started " + Constants.OPENCVDEMO_COMPLETE);
 
         // the main window top pane
         webcamPanel = new WebcamPanel(new EmptyLogger(), new DetectorsManager(new EmptyLogger()));
@@ -37,10 +37,10 @@ public class MinervaFxGui extends Application {
         JScrollPane consoleScrollPane = new JScrollPane(consoleOutputTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         consoleScrollPane.setWheelScrollingEnabled(true);
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fx/MinervaGui.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fx/OpenCvDemoGui.fxml"));
         Scene scene = new Scene(root, 560, 240);
         scene.setFill(Color.GHOSTWHITE);
-        stage.setTitle(Constants.MINERVAI_COMPLETE);
+        stage.setTitle(Constants.OPENCVDEMO_COMPLETE);
         stage.setScene(scene);
 
         webcamPanel.startCamera();

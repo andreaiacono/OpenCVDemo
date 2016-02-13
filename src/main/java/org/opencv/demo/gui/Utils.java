@@ -5,6 +5,8 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +19,13 @@ public class Utils {
     }
 
 
-    public static Map<String, String[]> loadClassifiers(String dataPath) {
+    public static Map<String, String[]> loadClassifiers(String dataDirectoryName) throws URISyntaxException {
 
         Map<String, String[]> classifiers = new HashMap<>();
-        File dir = new File(dataPath);
+        URL dir_url = ClassLoader.getSystemResource(dataDirectoryName);
+        File dir = new File(dir_url.toURI());
         for (String dirName: dir.list()) {
-            File file = new File(dataPath + File.separator + dirName);
+            File file = new File(ClassLoader.getSystemResource(dataDirectoryName + File.separator + dirName).toURI());
             if (file.isDirectory()) {
                 classifiers.put(file.getName(), file.list());
             }

@@ -1,6 +1,5 @@
 package org.opencv.demo.gui.swing;
 
-import org.opencv.demo.core.RecognizerManager;
 import org.opencv.demo.gui.Utils;
 import org.opencv.demo.misc.Constants;
 import org.opencv.demo.misc.SwingLogger;
@@ -17,6 +16,7 @@ import java.util.Map;
 public class OpenCvDemo extends JFrame {
 
     static final long serialVersionUID = 0;
+    private final Map<String, String[]> classifiersNames;
     private WebcamPanel webcamPanel;
 
     private JTextArea consoleOutputTextArea;
@@ -26,7 +26,8 @@ public class OpenCvDemo extends JFrame {
 
     public OpenCvDemo() throws Exception {
         super("OpenCV Demo");
-        Utils.loadClassifiers("/home/andrea/Downloads/opencv-3.1.0/data");
+
+        classifiersNames = Utils.loadClassifiers(Constants.CLASSIFIERS_PATH);
         UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 
         setSize(800, 800);
@@ -38,7 +39,7 @@ public class OpenCvDemo extends JFrame {
         setJMenuBar(createMenuBar());
 
         // main panels
-        consoleOutputTextArea = new JTextArea(Constants.MINERVAI_COMPLETE);
+        consoleOutputTextArea = new JTextArea(Constants.OPENCVDEMO_COMPLETE);
         consoleOutputTextArea.setEditable(false);
         webcamPanel = new WebcamPanel(logger, detectorsManager);
         webcamPanel.startCamera();
@@ -60,7 +61,7 @@ public class OpenCvDemo extends JFrame {
         setVisible(true);
     }
 
-    private JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar() throws Exception {
 
         JMenuBar menuBar = new JMenuBar();
 
@@ -78,16 +79,13 @@ public class OpenCvDemo extends JFrame {
         menuBar.add(menu);
         menu.setMnemonic(KeyEvent.VK_D);
 
-        // MENU CLASSIFIERS
-        Map<String, String[]> dataFiles = Utils.loadClassifiers("/home/andrea/dev/code/java/OpenCVDemo/src/main/resources/data/");
-
-        for (String classifierName : dataFiles.keySet()) {
+        for (String classifierName : classifiersNames.keySet()) {
             JMenu classifierSubMenu = new JMenu(classifierName);
-            for (String name : dataFiles.get(classifierName)) {
+            for (String name : classifiersNames.get(classifierName)) {
                 JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(name);
                 menuItem.addActionListener(e -> changeClassifier(
                         ((JCheckBoxMenuItem) e.getSource()).isSelected(),
-                        File.separator + "data" + File.separator + classifierName + File.separator + name));
+                        File.separator + Constants.CLASSIFIERS_PATH + File.separator + classifierName + File.separator + name));
                 classifierSubMenu.add(menuItem);
             }
             menu.add(classifierSubMenu);
@@ -112,9 +110,11 @@ public class OpenCvDemo extends JFrame {
         item.setMnemonic(KeyEvent.VK_S);
         item.addActionListener(e -> {
 
-            // for recognizing a face, we need only the face classifier
+            // for recognizing a face, we need the face classifier only
             detectorsManager.clear();
             detectorsManager.addDetector(Constants.DEFAULT_FACE_CLASSIFIER);
+
+            // activates the recognizer
             detectorsManager.changeRecognizerStatus();
         });
 

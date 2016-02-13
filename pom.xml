@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.minervai</groupId>
-    <artifactId>minervai</artifactId>
+    <groupId>org.opencvdemo</groupId>
+    <artifactId>opencvdemo</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <build>
@@ -25,14 +25,9 @@
         <dependency>
             <groupId>org.opencv</groupId>
             <artifactId>opencv</artifactId>
-            <version>3.0.0</version>
+            <version>3.1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/opencv-300.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-tools</artifactId>
-            <version>1.6.0</version>
+            <systemPath>${basedir}/lib/opencv-310.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

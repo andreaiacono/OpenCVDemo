@@ -25,7 +25,7 @@ public class DetectorsManager {
         init();
     }
 
-    public DetectorsManager(Loggable logger) {
+    public DetectorsManager(Loggable logger) throws Exception {
         this.logger = logger;
         this.recognizerManager = new RecognizerManager(logger);
         init();

@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MinervaFxGuiController implements Initializable {
+public class OpenCvDemoFxGuiController implements Initializable {
 
     @FXML
     private ImageView webcamImageView;

@@ -11,6 +11,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.net.URL;
 import java.util.*;
 
 public class RecognizerManager {
@@ -19,10 +20,11 @@ public class RecognizerManager {
     private Loggable logger;
     Map<Integer, String> idToNameMapping = null;
 
-    public RecognizerManager(Loggable logger) {
+    public RecognizerManager(Loggable logger) throws Exception {
         this.logger = logger;
 
-        String trainingDir = "/home/andrea/opencv";
+        URL dir_url = ClassLoader.getSystemResource(Constants.TRAINING_FACES_PATH);
+        File trainingDir = new File(dir_url.toURI());
 
         File[] imageFiles = getImagesFiles(trainingDir);
         idToNameMapping = createSummary(imageFiles);
@@ -59,16 +61,14 @@ public class RecognizerManager {
         return idToNameMapping.get(predictedLabel);
     }
 
-    private File[] getImagesFiles(String trainingDir) {
-
-        File root = new File(trainingDir);
+    private File[] getImagesFiles(File trainingDir) {
 
         FilenameFilter imgFilter = (dir, name) -> {
             name = name.toLowerCase();
             return name.endsWith(".jpg") || name.endsWith(".pgm") || name.endsWith(".png");
         };
 
-        return root.listFiles(imgFilter);
+        return trainingDir.listFiles(imgFilter);
     }
 
     private int getIdFromImage(String filename, Map<Integer, String> idToNameMapping) {

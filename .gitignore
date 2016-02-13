@@ -1,4 +1,8 @@
 lib
 .idea
-/Minerva.iml
+/*.iml
 target
+out
+#src/main/resources/data/haarcascades_cuda
+#src/main/resources/data/hogcascades
+#src/main/resources/data/lbpcascades
