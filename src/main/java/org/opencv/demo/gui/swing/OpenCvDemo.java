@@ -1,5 +1,6 @@
 package org.opencv.demo.gui.swing;
 
+import org.opencv.demo.core.RecognizerType;
 import org.opencv.demo.gui.Utils;
 import org.opencv.demo.misc.Constants;
 import org.opencv.demo.misc.SwingLogger;
@@ -94,6 +95,17 @@ public class OpenCvDemo extends JFrame {
         menu = new JMenu("Face Recognition");
         menuBar.add(menu);
         menu.setMnemonic(KeyEvent.VK_R);
+        JMenu recognizerSubMenu = new JMenu("Recognizers");
+        ButtonGroup group = new ButtonGroup();
+        for (RecognizerType type: RecognizerType.values()) {
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(type.toString());
+            menuItem.addActionListener(e -> changeRecognizer(type));
+            recognizerSubMenu.add(menuItem);
+            group.add(menuItem);
+        }
+        menu.add(recognizerSubMenu);
+
+        menu.add(new JSeparator());
 
         item = new JMenuItem("Capture new user");
         item.setMnemonic(KeyEvent.VK_C);
@@ -106,19 +118,20 @@ public class OpenCvDemo extends JFrame {
         });
         menu.add(item);
 
-        item = new JMenuItem("Start recognition");
-        item.setMnemonic(KeyEvent.VK_S);
-        item.addActionListener(e -> {
+        final JMenuItem rec_item = new JMenuItem("Start recognition");
+        rec_item.setMnemonic(KeyEvent.VK_S);
+        rec_item.addActionListener(event -> {
 
             // for recognizing a face, we need the face classifier only
             detectorsManager.clear();
             detectorsManager.addDetector(Constants.DEFAULT_FACE_CLASSIFIER);
 
             // activates the recognizer
-            detectorsManager.changeRecognizerStatus();
+            boolean isActive = detectorsManager.changeRecognizerStatus();
+            rec_item.setText( isActive ? "Stop recognition" :  "Start recognition");
         });
 
-        menu.add(item);
+        menu.add(rec_item);
         menuBar.add(menu);
 
         return menuBar;
@@ -138,6 +151,10 @@ public class OpenCvDemo extends JFrame {
             }
         }
         return true;
+    }
+
+    private void changeRecognizer(RecognizerType recognizerType) {
+        detectorsManager.changeRecognizer(recognizerType);
     }
 
     private void changeClassifier(boolean isSelected, String resourceName) {

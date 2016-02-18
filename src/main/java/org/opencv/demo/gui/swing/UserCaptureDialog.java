@@ -20,7 +20,7 @@ public class UserCaptureDialog extends JDialog {
     private static final String LABEL_RESUME_CAPTURING = "Resume capturing";
     private static final String LABEL_STOP_BUTTON = "Stop capturing";
     private static final String LABEL_SINGLE_SHOT = "Single shot";
-    private static final String LABEL_TRAIN_BUTTON = "Train";
+    private static final String LABEL_TRAIN_BUTTON = "Save images";
     private static final String LABEL_CLOSE_BUTTON = "Close";
     private final JButton startButton, stopButton;
     private final JLabel statusBar = new JLabel(" Ready");;
@@ -56,7 +56,7 @@ public class UserCaptureDialog extends JDialog {
         sl.putConstraint(SpringLayout.WEST, trainButton, 5, SpringLayout.WEST, this.getContentPane());
         sl.putConstraint(SpringLayout.SOUTH, trainButton, -5, SpringLayout.NORTH, statusBar);
 
-        JLabel userLabel = new JLabel("for user: ");
+        JLabel userLabel = new JLabel("for name: ");
         add(userLabel);
         sl.putConstraint(SpringLayout.WEST, userLabel, 5, SpringLayout.EAST, trainButton);
         sl.putConstraint(SpringLayout.SOUTH, userLabel, -10, SpringLayout.NORTH, statusBar);
@@ -150,6 +150,7 @@ public class UserCaptureDialog extends JDialog {
             for (BufferedImage capturedFace : capturedFaces) {
                 ImageIO.write(capturedFace, "JPG", new File(tempDir + File.separatorChar + userField.getText() + "_" + (counter++) + ".jpg"));
             }
+            JOptionPane.showMessageDialog(this, capturedFaces.size() + " images were saved in " + tempDir);
         } catch (Exception e1) {
             new ErrorDialog(e1).setVisible(true);
         }
@@ -174,7 +175,7 @@ public class UserCaptureDialog extends JDialog {
 
         capturedFaces.add(image);
         capturedImagesPanel.add(new JLabel(new ImageIcon(image)));
-        UserCaptureDialog.this.statusBar.setText("Captured " + capturedFaces.size() + " images");
+        UserCaptureDialog.this.statusBar.setText("Captured " + capturedFaces.size() + " images (" + Constants.MINIMUM_TRAIN_SET_SIZE + " are needed for saving)");
         scrollPane.getHorizontalScrollBar().setValue(scrollPane.getHorizontalScrollBar().getMaximum() + Constants.TRAIN_FACE_IMAGE_WIDTH);
         if (capturedFaces.size() >= Constants.MINIMUM_TRAIN_SET_SIZE) {
             trainButton.setEnabled(true);

@@ -22,6 +22,6 @@ public class Constants {
     public static Scalar WHITE = new Scalar(255,255,255);
     public static Scalar BLACK = new Scalar(0,0,0);
 
-    public static float RECOGNIZED_NAME_FONT_SIZE = 0.7f;
+    public static float RECOGNIZED_NAME_FONT_SIZE = 0.5f;
     public static final String NOT_RECOGNIZED_FACE = "unknown";
 }

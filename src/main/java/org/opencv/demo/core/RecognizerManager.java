@@ -16,7 +16,9 @@ import java.util.*;
 
 public class RecognizerManager {
 
-    private final FaceRecognizer faceRecognizer;
+    private final List images;
+    private final MatOfInt labelsBuffer;
+    private FaceRecognizer faceRecognizer;
     private Loggable logger;
     Map<Integer, String> idToNameMapping = null;
 
@@ -29,8 +31,8 @@ public class RecognizerManager {
         File[] imageFiles = getImagesFiles(trainingDir);
         idToNameMapping = createSummary(imageFiles);
 
-        ArrayList images = new ArrayList(imageFiles.length);
-        MatOfInt labelsBuf = new MatOfInt(new int[imageFiles.length]);
+        images = new ArrayList(imageFiles.length);
+        labelsBuffer = new MatOfInt(new int[imageFiles.length]);
 
         int counter = 0;
         for (File image : imageFiles) {
@@ -43,11 +45,20 @@ public class RecognizerManager {
 
             // sets the image
             images.add(img);
-            labelsBuf.put(counter++, 0, labelId);
+            labelsBuffer.put(counter++, 0, labelId);
         }
 
         faceRecognizer =  Face.createFisherFaceRecognizer();
-        faceRecognizer.train(images, labelsBuf);
+        trainRecognizer();
+    }
+
+    public void trainRecognizer() {
+        faceRecognizer.train(images, labelsBuffer);
+    }
+
+    public void changeRecognizer(FaceRecognizer faceRecognizer) {
+        this.faceRecognizer = faceRecognizer;
+        trainRecognizer();
     }
 
     public String recognizeFace(Mat face) {

@@ -101,6 +101,17 @@ public class DetectorsManager {
         }
     }
 
+    public void changeRecognizer(RecognizerType recognizerType) {
+        if (isRecognizerActive) {
+            changeRecognizerStatus();
+            recognizerManager.changeRecognizer(RecognizerFactory.getRecognizer(recognizerType));
+            changeRecognizerStatus();
+        }
+        else {
+            recognizerManager.changeRecognizer(RecognizerFactory.getRecognizer(recognizerType));
+        }
+    }
+
     public boolean hasDetector(String detectorName) {
         return detectors.values().stream().anyMatch(d -> d.getDetectorName().equals(detectorName));
     }
@@ -117,7 +128,8 @@ public class DetectorsManager {
         detectors.clear();
     }
 
-    public void changeRecognizerStatus() {
+    public boolean changeRecognizerStatus() {
         isRecognizerActive = !isRecognizerActive;
+        return isRecognizerActive;
     }
 }
