@@ -19,5 +19,4 @@ For enabling Face Recognition, you need to:
 * open file opencv_contrib-3.1.0/modules/face/CMakeLists.txt
 * append "java" to the WRAP section, so that it reads:
   <code>ocv_define_module(face opencv_core opencv_imgproc opencv_objdetect WRAP python java)</code>
-* add the switch <code>-D OPENCV_EXTRA_MODULES_PATH=$YOUR_OPENCV_CONTRIB_PATH/opencv_contrib-3.1.0/modules </code> 
-* compile opencv as showed in the link before
+* add the switch <code>-D OPENCV_EXTRA_MODULES_PATH=$YOUR_OPENCV_CONTRIB_PATH/opencv_contrib-3.1.0/modules </code> to the compile command showed in the installation tutorial linked above
