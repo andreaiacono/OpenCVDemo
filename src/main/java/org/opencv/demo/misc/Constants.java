@@ -2,6 +2,7 @@ package org.opencv.demo.misc;
 
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.demo.core.RecognizedFace;
 
 public class Constants {
 
@@ -15,6 +16,7 @@ public class Constants {
     public static int TRAIN_FACE_IMAGE_HEIGHT = 140;
     public static int TRAIN_FACE_IMAGE_WIDTH = TRAIN_FACE_IMAGE_HEIGHT;
     public static Size TRAIN_FACE_IMAGE_SIZE = new Size( (double) TRAIN_FACE_IMAGE_HEIGHT, (double)TRAIN_FACE_IMAGE_HEIGHT);
+    public static double FACE_RECOGNITION_THRESHOLD = 1000;
 
     public static int MAX_IMAGES_NUMBER_FOR_TRAINING = 50;
     public static String DEFAULT_FACE_CLASSIFIER = "/data/haarcascades/haarcascade_frontalface_alt.xml";
@@ -24,4 +26,5 @@ public class Constants {
 
     public static float RECOGNIZED_NAME_FONT_SIZE = 0.5f;
     public static final String NOT_RECOGNIZED_FACE = "unknown";
+    public static final RecognizedFace UNKNOWN_FACE = new RecognizedFace(NOT_RECOGNIZED_FACE, 0d);
 }

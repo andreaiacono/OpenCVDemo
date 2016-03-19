@@ -1,5 +1,6 @@
 package org.opencv.demo.core;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
 import org.opencv.demo.misc.Constants;
@@ -21,6 +22,10 @@ public class RecognizerManager {
     private FaceRecognizer faceRecognizer;
     private Loggable logger;
     Map<Integer, String> idToNameMapping = null;
+    private int[] labels;
+    private double[] confidence;
+
+
 
     public RecognizerManager(Loggable logger) throws Exception {
         this.logger = logger;
@@ -48,8 +53,10 @@ public class RecognizerManager {
             labelsBuffer.put(counter++, 0, labelId);
         }
 
-        faceRecognizer =  Face.createFisherFaceRecognizer();
+        faceRecognizer = RecognizerFactory.getRecognizer(RecognizerType.FISHER);
         trainRecognizer();
+        labels = new int[idToNameMapping.size()];
+        confidence = new double[idToNameMapping.size()];
     }
 
     public void trainRecognizer() {
@@ -61,15 +68,20 @@ public class RecognizerManager {
         trainRecognizer();
     }
 
-    public String recognizeFace(Mat face) {
+    public RecognizedFace recognizeFace(Mat face) {
 
         if (face == null) {
-            return Constants.NOT_RECOGNIZED_FACE;
+            return Constants.UNKNOWN_FACE;
         }
 
         Mat resizedGrayFace = ImageUtils.toGrayScale(ImageUtils.resizeFace(face));
-        int predictedLabel = faceRecognizer.predict(resizedGrayFace);
-        return idToNameMapping.get(predictedLabel);
+        faceRecognizer.predict(resizedGrayFace, labels, confidence);
+
+        if (confidence[0] < Constants.FACE_RECOGNITION_THRESHOLD) {
+            return new RecognizedFace(idToNameMapping.get(labels[0]), confidence[0]);
+        }
+
+        return Constants.UNKNOWN_FACE;
     }
 
     private File[] getImagesFiles(File trainingDir) {
@@ -104,4 +116,5 @@ public class RecognizerManager {
 
         return idToNameMapping;
     }
+
 }

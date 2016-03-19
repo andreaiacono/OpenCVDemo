@@ -66,7 +66,15 @@ public class DetectorsManager {
                     assert(detectors.size() == 1 && detectors.containsKey(Constants.DEFAULT_FACE_CLASSIFIER));
 
                     // recognizes the face
-                    String name = recognizerManager.recognizeFace(detectedElement.getDetectedImageElement());
+                    RecognizedFace recognizedFace = recognizerManager.recognizeFace(detectedElement.getDetectedImageElement());
+                    String name;
+                    if (recognizedFace == Constants.UNKNOWN_FACE) {
+                        name = recognizedFace.getName();
+                    }
+                    else {
+                        int percentage = (int)(100 * (Constants.FACE_RECOGNITION_THRESHOLD - recognizedFace.getConfidence()) / Constants.FACE_RECOGNITION_THRESHOLD);
+                        name = recognizedFace.getName() + "  [" + percentage + "%]";
+                    }
 
                     // writes the name of the recognized person (sort of embossed)
                     Point position = detectedElement.getPosition();
