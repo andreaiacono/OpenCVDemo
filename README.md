@@ -15,8 +15,8 @@ In package [org/opencv/demo/gui/swing/standalone](https://github.com/andreaiacon
 For installing OpenCV with Java on Ubuntu, I've followed this tutorial: http://milq.github.io/install-opencv-ubuntu-debian/ ; if you're using Mac or Windows, I'm sure it's plenty of tutorial on how to do that.
 Please note that when you have to download the archive from github repository, you first have to choose the <code>3.1.0</code> tag (the download link is [https://github.com/Itseez/opencv/archive/3.1.0.zip](https://github.com/Itseez/opencv/archive/3.1.0.zip)).
 
-### Enabling Face Recognition
-For enabling Face Recognition, you need to:
+### Enabling Face Recognition when compiling OpenCV
+To enable Face Recognition, you need to:
 * download the 3.1 version of the opencv_contrib: https://github.com/Itseez/opencv_contrib/archive/3.1.0.zip
 * extract the archive
 * open file opencv_contrib-3.1.0/modules/face/CMakeLists.txt
