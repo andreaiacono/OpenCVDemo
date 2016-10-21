@@ -1,11 +1,13 @@
 package org.opencv.demo.gui.swing.standalone;
 
 import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.net.URL;
@@ -19,6 +21,7 @@ public class WebcamFaceDetectionDemo extends JFrame {
 
     public WebcamFaceDetectionDemo() {
 
+        setSize(640,480);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         webcamPanel = new WebcamPanel();
@@ -34,7 +37,7 @@ public class WebcamFaceDetectionDemo extends JFrame {
             System.err.println("Camera was not opened.");
         }
 
-        URL cascadeData = getClass().getResource("/haarcascade_frontalface_alt.xml");
+        URL cascadeData = getClass().getResource("/data/haarcascades/haarcascade_frontalface_alt.xml");
         if (cascadeData == null) {
             System.err.println("Could not load cascade data: file not found.");
             System.exit(-1);
@@ -69,19 +72,31 @@ public class WebcamFaceDetectionDemo extends JFrame {
 
     private class WebcamPanel extends JPanel {
 
-        public void updateImage(Mat matrix) {
+        private BufferedImage imageToDisplay;
 
-            int type = BufferedImage.TYPE_BYTE_GRAY;
-            if (matrix.channels() > 1) {
-                type = BufferedImage.TYPE_3BYTE_BGR;
-            }
+        public BufferedImage getImage(Mat matrix) {
+
+            int type = BufferedImage.TYPE_3BYTE_BGR;
             byte[] b = new byte[matrix.channels() * matrix.cols() * matrix.rows()];
+            BufferedImage image = new BufferedImage(matrix.cols(), matrix.rows(), type);
             matrix.get(0, 0, b);
-            image = new BufferedImage(matrix.cols(), matrix.rows(), type);
             final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
             System.arraycopy(b, 0, targetPixels, 0, b.length);
 
+            return image;
+        }
+
+        public void updateImage(Mat image) {
+            imageToDisplay = getImage(image);
             repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (imageToDisplay != null) {
+                g.drawImage(this.imageToDisplay, 1, 1, this.imageToDisplay.getWidth(), this.imageToDisplay.getHeight(), null);
+            }
         }
     }
 
@@ -101,7 +116,6 @@ public class WebcamFaceDetectionDemo extends JFrame {
             return null;
         }
     }
-
 
     public static void main(String[] args) {
         new WebcamFaceDetectionDemo();

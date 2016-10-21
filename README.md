@@ -6,9 +6,15 @@ It works with OpenCV 3.1 and Java and looks like this:
 
 ## Project
 The application has a Swing GUI and uses OpenCV for capturing the webcam stream; the face detection/recognition is completely decoupled from the GUI because I need to use these classes for a GUIless application on a raspberry.
-To test face recognition, you have to choose menu _Face Recognition -> Capture new user_ and take at least 20 photos; then you have to press the "Save images" button adding a USERNAME in the input text and the application will save the images to file system (in the <code>java.io.tmpdir</code> dir where the filename has the format USERNAME_N.jpg); now you have to close the application, copy the images to the <code>/src/main/resources/faces</code> directory and restart the application (sooner or later I'll fix this behaviuor). Now you can choose _Face Recognition -> Start recognition_ to see face recognition in action. This hack will be fixed on a future version.
+
+### Recognition
+To test face recognition, you have to choose menu _Face Recognition -> Capture new user_ and take at least 20 photos; then you have to press the "Save images" button adding a USERNAME in the input text and the application will save the images to file system (in the <code>java.io.tmpdir</code> dir where the filename has the format USERNAME_N.jpg); now you have to close the application, copy the images to the <code>/src/main/resources/faces</code> directory and restart the application (sooner or later I'll fix this behaviuor). 
+
+Now you can choose _Face Recognition -> Start recognition_ to see face recognition in action.
+
 OpenCV supports three different recognizers that you can choose from the menu _Face Recognition -> recognizers_.
 
+### Standalone classes
 In package [org/opencv/demo/gui/swing/standalone](https://github.com/andreaiacono/OpenCVDemo/tree/master/src/main/java/org/opencv/demo/gui/swing/standalone) there are a couple of classes that can be used as standalone classes to show how works face detection and recognition.
 
 ## Installation
